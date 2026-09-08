@@ -147,7 +147,7 @@
     <div class="section-title">Ingestion Payload Input (Comma-separated)</div>
     <div class="input-group">
         <input type="text" id="payloadInput" value="45.2, None, 48.7, None, 51.3">
-        <button onclick="runPipeline()">Run Pipeline</button>
+        <button id="runBtn" onclick="runPipeline()">Run Pipeline</button>
     </div>
 
     <div id="statusBox" class="pipeline-status">
@@ -166,13 +166,18 @@
 
 <script>
     function runPipeline() {
-        const rawInput = document.getElementById('payloadInput').value;
+        const payloadInput = document.getElementById('payloadInput');
+        if (!payloadInput) return;
+
+        const rawInput = payloadInput.value;
         const rawArray = rawInput.split(',').map(item => item.trim());
         
         const rawVisual = document.getElementById('rawVisual');
         const cleanVisual = document.getElementById('cleanVisual');
         const consoleLog = document.getElementById('consoleLog');
         const statusBox = document.getElementById('statusBox');
+
+        if (!rawVisual || !cleanVisual || !consoleLog || !statusBox) return;
 
         rawVisual.innerHTML = '';
         cleanVisual.innerHTML = '';
@@ -213,7 +218,9 @@
         consoleLog.textContent = `SanitizationPipelineComplete. Cleaned output array timeline: ${formattedArrayStr}`;
     }
 
-    window.onload = runPipeline;
+    window.onload = function() {
+        runPipeline();
+    };
 </script>
 
 </body>
